@@ -1,24 +1,26 @@
-# 🧠 Navao - AI-Powered Context for ChatGPT
+# Navao - AI-Powered Prompt Engineering
 
-Navao is a Chrome extension that lets you save highlighted text from any webpage and automatically enhance your ChatGPT prompts with that context using AI optimization.
+**Become an Expert Prompt Engineer**
 
-## ✨ Features
+Navao automatically optimizes your prompts with relevant context and tailors them for any AI model. Transform your browser into a prompt engineering powerhouse.
 
-- **💾 Save Text Anywhere**: Right-click on highlighted text to save it to Navao
-- **🧠 AI-Powered Optimization**: Click "Optimize" button in ChatGPT to enhance prompts with saved context
-- **📱 Simple Management**: View, delete, and manage saved text snippets through a clean popup interface
-- **🤖 Gemini Integration**: Uses Google's Gemini AI to apply prompt engineering best practices
-- **🔒 Local Storage**: All data stays on your device
+## Features
 
-## 🚀 How It Works
+- **Save Context Anywhere**: Right-click on highlighted text to save it to Navao
+- **AI-Powered Optimization**: Click "Optimize" button in ChatGPT to enhance prompts with saved context
+- **Simple Management**: View, delete, and manage saved text snippets through a clean popup interface
+- **Advanced Prompt Engineering**: Uses Google's Gemini AI to apply expert prompt engineering techniques
+- **Local Storage**: All data stays on your device
 
-1. **Save Context**: Highlight any text on the web → Right-click → "💾 Save to Navao"
+## How It Works
+
+1. **Save Context**: Highlight any text on the web, right-click, and select "Save to Navao"
 2. **Go to ChatGPT**: Visit chat.openai.com or chatgpt.com
 3. **Type Your Prompt**: Start writing your message
 4. **Optimize**: Click the "Optimize" button (with Navao logo) that appears
 5. **Get Enhanced Results**: Your prompt is automatically optimized with relevant context
 
-## 📥 Installation
+## Installation
 
 ### Method 1: Load Unpacked (Developer Mode)
 
@@ -43,7 +45,7 @@ Navao is a Chrome extension that lets you save highlighted text from any webpage
 
 *Coming soon - extension will be published to the Chrome Web Store*
 
-## 🛠️ Setup & Configuration
+## Setup & Configuration
 
 ### Required Files
 - `manifest.json` - Extension configuration
@@ -59,11 +61,11 @@ Navao is a Chrome extension that lets you save highlighted text from any webpage
 - **Active Tab**: To interact with current webpage
 - **Host Permissions**: Access to ChatGPT and Gemini API
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### Saving Text
 1. Highlight any text on any webpage
-2. Right-click and select "💾 Save to Navao"
+2. Right-click and select "Save to Navao"
 3. You'll see a notification confirming the save
 
 ### Managing Saved Text
@@ -82,7 +84,7 @@ Navao is a Chrome extension that lets you save highlighted text from any webpage
    - Better structure and clarity
    - Specific constraints and formatting
 
-## 🔧 Technical Details
+## Technical Details
 
 ### Architecture
 - **Manifest V3** Chrome extension
@@ -109,7 +111,7 @@ navao/
 - Adds role assignments, constraints, and structure
 - Fallback handling for API errors
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Button Not Appearing
 - Reload the extension in `chrome://extensions/`
@@ -126,14 +128,14 @@ navao/
 - Check Gemini API key in `config.js`
 - Review console for detailed error messages
 
-## 🔐 Privacy & Security
+## Privacy & Security
 
 - **Local Storage Only**: All saved text stays on your device
 - **No Data Collection**: Extension doesn't track or store user data
 - **API Calls**: Only optimization requests sent to Gemini
 - **Open Source**: All code is visible and auditable
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -141,11 +143,11 @@ navao/
 4. Test thoroughly
 5. Submit a pull request
 
-## 📄 License
+## License
 
 This project is open source. Feel free to use, modify, and distribute.
 
-## 🆘 Support
+## Support
 
 Having issues? 
 1. Check the troubleshooting section above
@@ -154,4 +156,4 @@ Having issues?
 
 ---
 
-**Made with ❤️ for better AI conversations**
+**Transform your browser into a prompt engineering powerhouse**
