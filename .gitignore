@@ -1,0 +1,10 @@
+# Environment files
+.env
+
+# Chrome extension files (optional)
+*.crx
+*.pem
+
+# Development files
+.DS_Store
+node_modules/

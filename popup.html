@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <h1>
+      <img src="logo.png" alt="Navao" class="logo" />
+      Navao
+    </h1>
+    <div id="count" class="count">0 saved snippets</div>
+  </div>
+  
+  <div id="snippets-container" class="snippets-container">
+    <div id="empty-state" class="empty-state">
+      No saved text yet. Highlight text on any webpage and right-click to save it.
+    </div>
+  </div>
+  
+  <div class="footer">
+    <button id="clear-all" class="clear-all-btn">Clear All</button>
+  </div>
+  
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="modal-close" class="close">&times;</span>
+      </div>
+      <div id="modal-text" class="modal-text"></div>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
