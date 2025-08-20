@@ -1,4 +1,4 @@
-# Navao - AI-Powered Prompt Engineering
+# Navao
 
 **Become an Expert Prompt Engineer**
 
@@ -37,9 +37,10 @@ Navao automatically optimizes your prompts with relevant context and tailors the
    - Select the `navao` folder containing the extension files
    - The extension should now appear in your extensions list
 
-4. **Setup API Key** (Optional):
-   - The extension includes a Gemini API key for testing
-   - For production use, replace the key in `config.js`
+4. **Setup API Key**:
+   - Copy `config.template.js` to `config.js`
+   - Get a free Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Replace `YOUR_GEMINI_API_KEY_HERE` with your actual API key
 
 ### Method 2: Chrome Web Store
 
@@ -52,7 +53,7 @@ Navao automatically optimizes your prompts with relevant context and tailors the
 - `background.js` - Context menu and storage logic
 - `content.js` - ChatGPT integration and optimization
 - `popup.html/css/js` - Management interface
-- `config.js` - API configuration
+- `config.js` - API configuration (created from template)
 
 ### Permissions Needed
 - **Context Menus**: For right-click "Save to Navao" option
@@ -99,7 +100,8 @@ navao/
 ├── background.js          # Context menu & storage
 ├── content.js            # ChatGPT integration
 ├── popup.html/css/js     # Management interface
-├── config.js             # API configuration
+├── config.template.js    # API configuration template
+├── config.js             # API configuration (created from template)
 ├── logo.png              # Logo icon
 └── README.md            # This file
 ```
@@ -125,7 +127,8 @@ navao/
 
 ### API Errors
 - Verify internet connection
-- Check Gemini API key in `config.js`
+- Ensure you've created `config.js` from the template
+- Check your Gemini API key in `config.js` is valid
 - Review console for detailed error messages
 
 ## Privacy & Security
