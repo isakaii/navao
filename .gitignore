@@ -1,6 +1,9 @@
 # Environment files
 .env
 
+# Configuration with API keys
+config.js
+
 # Chrome extension files (optional)
 *.crx
 *.pem
