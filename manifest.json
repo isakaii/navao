@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Navao",
+  "name": "Weaver",
   "version": "1.0",
   "description": "Save highlighted text to enhance ChatGPT prompts",
   "permissions": [
@@ -18,7 +18,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "Navao",
+    "default_title": "Weaver",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "logo.png",

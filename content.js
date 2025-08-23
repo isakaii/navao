@@ -1,7 +1,7 @@
-let navaoButton = null;
+let weaverButton = null;
 
 function init() {
-  console.log('Navao content script loaded');
+  console.log('Weaver content script loaded');
   waitForChatGPTInterface();
 }
 
@@ -9,7 +9,7 @@ function waitForChatGPTInterface() {
   const checkForInterface = () => {
     const textarea = findChatGPTTextarea();
     if (textarea) {
-      setupNavaoButton(textarea);
+      setupWeaverButton(textarea);
     } else {
       setTimeout(checkForInterface, 1000);
     }
@@ -36,22 +36,22 @@ function findChatGPTTextarea() {
   return null;
 }
 
-function setupNavaoButton(textarea) {
-  if (navaoButton) {
-    navaoButton.remove();
+function setupWeaverButton(textarea) {
+  if (weaverButton) {
+    weaverButton.remove();
   }
   
   // Find the send button container to position our button nearby
   const sendButton = findSendButton();
   if (!sendButton) {
-    setTimeout(() => setupNavaoButton(textarea), 1000);
+    setTimeout(() => setupWeaverButton(textarea), 1000);
     return;
   }
   
-  // Create Navao optimization button
-  navaoButton = document.createElement('button');
-  navaoButton.innerHTML = `<img src="${chrome.runtime.getURL('logo.png')}" style="width: 16px; height: 16px; margin-right: 6px; vertical-align: middle; border-radius: 2px;" />Optimize`;
-  navaoButton.style.cssText = `
+  // Create Weaver optimization button
+  weaverButton = document.createElement('button');
+  weaverButton.innerHTML = `<img src="${chrome.runtime.getURL('logo.png')}" style="width: 16px; height: 16px; margin-right: 6px; vertical-align: middle; border-radius: 2px;" />Optimize`;
+  weaverButton.style.cssText = `
     background: #ffffff;
     color: #030213;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -77,34 +77,34 @@ function setupNavaoButton(textarea) {
     overflow: visible;
   `;
   
-  navaoButton.addEventListener('mouseenter', () => {
-    navaoButton.style.background = '#f8f9fa';
-    navaoButton.style.borderColor = '#030213';
-    navaoButton.style.transform = 'translateY(-1px)';
-    navaoButton.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+  weaverButton.addEventListener('mouseenter', () => {
+    weaverButton.style.background = '#f8f9fa';
+    weaverButton.style.borderColor = '#030213';
+    weaverButton.style.transform = 'translateY(-1px)';
+    weaverButton.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
   });
   
-  navaoButton.addEventListener('mouseleave', () => {
-    navaoButton.style.background = '#ffffff';
-    navaoButton.style.borderColor = 'rgba(0, 0, 0, 0.1)';
-    navaoButton.style.transform = 'translateY(0)';
-    navaoButton.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+  weaverButton.addEventListener('mouseleave', () => {
+    weaverButton.style.background = '#ffffff';
+    weaverButton.style.borderColor = 'rgba(0, 0, 0, 0.1)';
+    weaverButton.style.transform = 'translateY(0)';
+    weaverButton.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
   });
   
-  navaoButton.addEventListener('click', (e) => {
+  weaverButton.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Navao optimize button clicked');
-    optimizePromptWithNavao(textarea);
+    console.log('Weaver optimize button clicked');
+    optimizePromptWithWeaver(textarea);
   });
   
   // Insert button before send button
-  sendButton.parentNode.insertBefore(navaoButton, sendButton);
+  sendButton.parentNode.insertBefore(weaverButton, sendButton);
   
   // Show/hide button based on textarea content
   const updateButtonVisibility = () => {
     const content = getTextareaValue(textarea);
-    navaoButton.style.display = content.trim() ? 'inline-flex' : 'none';
+    weaverButton.style.display = content.trim() ? 'inline-flex' : 'none';
   };
   
   // Monitor textarea for changes
@@ -124,9 +124,9 @@ function setupNavaoButton(textarea) {
   setTimeout(() => {
     const currentTextarea = findChatGPTTextarea();
     if (currentTextarea && currentTextarea !== textarea) {
-      setupNavaoButton(currentTextarea);
+      setupWeaverButton(currentTextarea);
     } else {
-      setTimeout(() => setupNavaoButton(textarea), 2000);
+      setTimeout(() => setupWeaverButton(textarea), 2000);
     }
   }, 2000);
 }
@@ -169,8 +169,8 @@ function setTextareaValue(textarea, value) {
   textarea.dispatchEvent(event);
 }
 
-async function optimizePromptWithNavao(textarea) {
-  console.log('optimizePromptWithNavao called');
+async function optimizePromptWithWeaver(textarea) {
+  console.log('optimizePromptWithWeaver called');
   const originalPrompt = getTextareaValue(textarea);
   console.log('Original prompt:', originalPrompt);
   
@@ -180,17 +180,17 @@ async function optimizePromptWithNavao(textarea) {
   }
   
   // Show loading state
-  navaoButton.innerHTML = `<img src="${chrome.runtime.getURL('logo.png')}" style="width: 16px; height: 16px; margin-right: 6px; vertical-align: middle; border-radius: 2px; opacity: 0.6;" />Optimizing...`;
-  navaoButton.disabled = true;
-  navaoButton.style.opacity = '0.7';
+  weaverButton.innerHTML = `<img src="${chrome.runtime.getURL('logo.png')}" style="width: 16px; height: 16px; margin-right: 6px; vertical-align: middle; border-radius: 2px; opacity: 0.6;" />Optimizing...`;
+  weaverButton.disabled = true;
+  weaverButton.style.opacity = '0.7';
   console.log('Button state changed to loading');
   
   try {
-    // Get saved Navao data
-    const result = await chrome.storage.local.get(['navaoData']);
+    // Get saved Weaver data
+    const result = await chrome.storage.local.get(['weaverData']);
     
-    const navaoData = result.navaoData || [];
-    const optimizedPrompt = await optimizeWithGemini(originalPrompt, navaoData);
+    const weaverData = result.weaverData || [];
+    const optimizedPrompt = await optimizeWithGemini(originalPrompt, weaverData);
     
     if (optimizedPrompt) {
       setTextareaValue(textarea, optimizedPrompt);
@@ -199,14 +199,14 @@ async function optimizePromptWithNavao(textarea) {
     console.error('Error optimizing prompt:', error);
   } finally {
     // Reset button
-    navaoButton.innerHTML = `<img src="${chrome.runtime.getURL('logo.png')}" style="width: 16px; height: 16px; margin-right: 6px; vertical-align: middle; border-radius: 2px;" />Optimize`;
-    navaoButton.disabled = false;
-    navaoButton.style.opacity = '1';
+    weaverButton.innerHTML = `<img src="${chrome.runtime.getURL('logo.png')}" style="width: 16px; height: 16px; margin-right: 6px; vertical-align: middle; border-radius: 2px;" />Optimize`;
+    weaverButton.disabled = false;
+    weaverButton.style.opacity = '1';
   }
 }
 
-async function optimizeWithGemini(originalPrompt, navaoData) {
-  const contextText = formatNavaoContext(navaoData);
+async function optimizeWithGemini(originalPrompt, weaverData) {
+  const contextText = formatWeaverContext(weaverData);
   
   const systemPrompt = `You are an expert prompt engineer. Transform the user's prompt using advanced prompt engineering techniques and integrate all relevant context from their saved sources.
 
@@ -270,12 +270,12 @@ Return ONLY the optimized prompt with no explanation or meta-commentary.`;
   }
 }
 
-function formatNavaoContext(navaoData) {
-  if (!navaoData || navaoData.length === 0) return '';
+function formatWeaverContext(weaverData) {
+  if (!weaverData || weaverData.length === 0) return '';
   
   let contextText = 'RELEVANT CONTEXT:\n';
   
-  navaoData.forEach((item, index) => {
+  weaverData.forEach((item, index) => {
     const domain = extractDomain(item.sourceUrl);
     contextText += `${index + 1}. From ${domain}: "${item.text}"\n`;
   });

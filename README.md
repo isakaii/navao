@@ -1,12 +1,12 @@
-# Navao
+# Weaver
 
 **Become an Expert Prompt Engineer**
 
-Navao automatically optimizes your prompts with relevant context and tailors them for any AI model. Transform your browser into a prompt engineering powerhouse.
+Weaver automatically optimizes your prompts with relevant context and tailors them for any AI model. Transform your browser into a prompt engineering powerhouse.
 
 ## Features
 
-- **Save Context Anywhere**: Right-click on highlighted text to save it to Navao
+- **Save Context Anywhere**: Right-click on highlighted text to save it to Weaver
 - **AI-Powered Optimization**: Click "Optimize" button in ChatGPT to enhance prompts with saved context
 - **Simple Management**: View, delete, and manage saved text snippets through a clean popup interface
 - **Advanced Prompt Engineering**: Uses Google's Gemini AI to apply expert prompt engineering techniques
@@ -14,10 +14,10 @@ Navao automatically optimizes your prompts with relevant context and tailors the
 
 ## How It Works
 
-1. **Save Context**: Highlight any text on the web, right-click, and select "Save to Navao"
+1. **Save Context**: Highlight any text on the web, right-click, and select "Save to Weaver"
 2. **Go to ChatGPT**: Visit chat.openai.com or chatgpt.com
 3. **Type Your Prompt**: Start writing your message
-4. **Optimize**: Click the "Optimize" button (with Navao logo) that appears
+4. **Optimize**: Click the "Optimize" button (with Weaver logo) that appears
 5. **Get Enhanced Results**: Your prompt is automatically optimized with relevant context
 
 ## Installation
@@ -34,7 +34,7 @@ Navao automatically optimizes your prompts with relevant context and tailors the
 
 3. **Load the extension**:
    - Click "Load unpacked"
-   - Select the `navao` folder containing the extension files
+   - Select the `weaver` folder containing the extension files
    - The extension should now appear in your extensions list
 
 4. **Setup API Key**:
@@ -56,7 +56,7 @@ Navao automatically optimizes your prompts with relevant context and tailors the
 - `config.js` - API configuration (created from template)
 
 ### Permissions Needed
-- **Context Menus**: For right-click "Save to Navao" option
+- **Context Menus**: For right-click "Save to Weaver" option
 - **Storage**: To save highlighted text locally
 - **Notifications**: Success confirmations
 - **Active Tab**: To interact with current webpage
@@ -66,11 +66,11 @@ Navao automatically optimizes your prompts with relevant context and tailors the
 
 ### Saving Text
 1. Highlight any text on any webpage
-2. Right-click and select "Save to Navao"
+2. Right-click and select "Save to Weaver"
 3. You'll see a notification confirming the save
 
 ### Managing Saved Text
-1. Click the Navao extension icon in Chrome
+1. Click the Weaver extension icon in Chrome
 2. View all saved snippets with timestamps and source domains
 3. Click any snippet to view full text
 4. Use the "×" button to delete individual snippets
@@ -78,9 +78,9 @@ Navao automatically optimizes your prompts with relevant context and tailors the
 
 ### Optimizing ChatGPT Prompts
 1. Go to ChatGPT and start typing a prompt
-2. The "Optimize" button (with Navao logo) appears next to Send
+2. The "Optimize" button (with Weaver logo) appears next to Send
 3. Click to enhance your prompt with:
-   - Saved context from Navao
+   - Saved context from Weaver
    - Advanced prompt engineering techniques
    - Better structure and clarity
    - Specific constraints and formatting
@@ -95,7 +95,7 @@ Navao automatically optimizes your prompts with relevant context and tailors the
 
 ### File Structure
 ```
-navao/
+weaver/
 ├── manifest.json          # Extension configuration
 ├── background.js          # Context menu & storage
 ├── content.js            # ChatGPT integration

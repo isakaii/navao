@@ -1,4 +1,4 @@
-// Configuration template for Navao extension
+// Configuration template for Weaver extension
 // Copy this file to config.js and replace the placeholders with your actual values
 
 const CONFIG = {

@@ -1,19 +1,19 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
-    id: "saveToNavao",
-    title: "Save to Navao",
+    id: "saveToWeaver",
+    title: "Save to Weaver",
     contexts: ["selection"]
   });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === "saveToNavao" && info.selectionText) {
-    saveTextToNavao(info.selectionText, tab.url);
+  if (info.menuItemId === "saveToWeaver" && info.selectionText) {
+    saveTextToWeaver(info.selectionText, tab.url);
   }
 });
 
-function saveTextToNavao(text, sourceUrl) {
-  console.log('saveTextToNavao called with:', { text, sourceUrl });
+function saveTextToWeaver(text, sourceUrl) {
+  console.log('saveTextToWeaver called with:', { text, sourceUrl });
   
   const savedItem = {
     text: text,
@@ -22,12 +22,12 @@ function saveTextToNavao(text, sourceUrl) {
     id: generateId()
   };
 
-  chrome.storage.local.get(['navaoData'], (result) => {
-    console.log('Current navaoData:', result.navaoData);
-    const navaoData = result.navaoData || [];
-    navaoData.push(savedItem);
+  chrome.storage.local.get(['weaverData'], (result) => {
+    console.log('Current weaverData:', result.weaverData);
+    const weaverData = result.weaverData || [];
+    weaverData.push(savedItem);
     
-    chrome.storage.local.set({ navaoData: navaoData }, () => {
+    chrome.storage.local.set({ weaverData: weaverData }, () => {
       console.log('Data saved successfully, creating notification...');
       
       // Check notification permission first
@@ -35,13 +35,13 @@ function saveTextToNavao(text, sourceUrl) {
         console.log('Notification permission level:', level);
         
         if (level === 'granted') {
-          const notificationId = 'navao-' + Date.now();
+          const notificationId = 'weaver-' + Date.now();
           console.log('Creating notification with ID:', notificationId);
           
           chrome.notifications.create(notificationId, {
             type: 'basic',
             iconUrl: 'logo.png',
-            title: 'Saved to Navao!',
+            title: 'Saved to Weaver!',
             message: `"${text.slice(0, 50)}${text.length > 50 ? '...' : ''}" has been saved.`,
             contextMessage: 'Text snippet saved successfully'
           }, (createdId) => {
@@ -50,10 +50,10 @@ function saveTextToNavao(text, sourceUrl) {
               console.log('Trying fallback notification...');
               
               // Fallback notification with minimal setup
-              chrome.notifications.create('navao-fallback-' + Date.now(), {
+              chrome.notifications.create('weaver-fallback-' + Date.now(), {
                 type: 'basic',
                 iconUrl: '',
-                title: 'Saved to Navao!',
+                title: 'Saved to Weaver!',
                 message: `Text saved successfully!`
               }, (fallbackId) => {
                 if (chrome.runtime.lastError) {

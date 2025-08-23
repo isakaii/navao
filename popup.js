@@ -11,10 +11,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadSnippets() {
-  chrome.storage.local.get(['navaoData'], function(result) {
-    const navaoData = result.navaoData || [];
-    updateCount(navaoData.length);
-    renderSnippets(navaoData);
+  chrome.storage.local.get(['weaverData'], function(result) {
+    const weaverData = result.weaverData || [];
+    updateCount(weaverData.length);
+    renderSnippets(weaverData);
   });
 }
 
@@ -112,11 +112,11 @@ function closeModal() {
 }
 
 function deleteSnippet(id) {
-  chrome.storage.local.get(['navaoData'], function(result) {
-    const navaoData = result.navaoData || [];
-    const updatedData = navaoData.filter(snippet => snippet.id !== id);
+  chrome.storage.local.get(['weaverData'], function(result) {
+    const weaverData = result.weaverData || [];
+    const updatedData = weaverData.filter(snippet => snippet.id !== id);
     
-    chrome.storage.local.set({ navaoData: updatedData }, function() {
+    chrome.storage.local.set({ weaverData: updatedData }, function() {
       loadSnippets();
     });
   });
@@ -124,7 +124,7 @@ function deleteSnippet(id) {
 
 function clearAllSnippets() {
   if (confirm('Are you sure you want to clear all saved snippets?')) {
-    chrome.storage.local.set({ navaoData: [] }, function() {
+    chrome.storage.local.set({ weaverData: [] }, function() {
       loadSnippets();
     });
   }
