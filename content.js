@@ -242,32 +242,105 @@ Rewrite the prompt to be more effective by:
 Return ONLY the optimized prompt with no explanation or meta-commentary.`;
 
   try {
-    // Using Gemini via AI Studio API (free tier)
-    const response = await fetch(`${CONFIG.GEMINI_API_URL}?key=${CONFIG.GEMINI_API_KEY}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: systemPrompt
-          }]
-        }]
-      })
-    });
-    
-    if (!response.ok) {
-      throw new Error('Gemini API request failed');
-    }
-    
-    const data = await response.json();
-    return data.candidates[0]?.content?.parts[0]?.text || originalPrompt;
+    const response = await callGeminiAPI(systemPrompt);
+    return response || originalPrompt;
   } catch (error) {
     console.error('Gemini API error:', error);
-    // Fallback: just add context without optimization
     return contextText + originalPrompt;
   }
+}
+
+async function extractNodesAndRelationships(text, existingNodes = [], existingRelationships = []) {
+  const existingContext = formatExistingGraph(existingNodes, existingRelationships);
+  
+  const systemPrompt = `You are an expert knowledge graph extraction system. Analyze the provided text and extract meaningful nodes (entities/concepts) and their relationships.
+
+EXISTING GRAPH CONTEXT:
+${existingContext}
+
+NEW TEXT TO ANALYZE:
+"${text}"
+
+INSTRUCTIONS:
+1. Extract 3-7 key nodes (entities, concepts, people, organizations, topics) from the text
+2. Identify meaningful relationships between nodes (both within the new text and connections to existing nodes)
+3. Each node should have: name, type (person, concept, organization, topic, etc.), description
+4. Each relationship should have: fromNode, toNode, relationshipType, description
+5. Consider the existing graph context to avoid duplicates and find connections
+
+Return a JSON object with this exact structure:
+{
+  "nodes": [
+    {
+      "id": "unique_id",
+      "name": "Node Name",
+      "type": "node_type",
+      "description": "Brief description"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "unique_id",
+      "fromNode": "node_id",
+      "toNode": "node_id", 
+      "relationshipType": "relationship_type",
+      "description": "Relationship description"
+    }
+  ]
+}
+
+Return ONLY the JSON object, no explanation.`;
+
+  try {
+    const response = await callGeminiAPI(systemPrompt);
+    return JSON.parse(response);
+  } catch (error) {
+    console.error('Error extracting nodes and relationships:', error);
+    return { nodes: [], relationships: [] };
+  }
+}
+
+async function callGeminiAPI(prompt) {
+  const response = await fetch(`${CONFIG.GEMINI_API_URL}?key=${CONFIG.GEMINI_API_KEY}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      contents: [{
+        parts: [{
+          text: prompt
+        }]
+      }]
+    })
+  });
+  
+  if (!response.ok) {
+    throw new Error('Gemini API request failed');
+  }
+  
+  const data = await response.json();
+  return data.candidates[0]?.content?.parts[0]?.text;
+}
+
+function formatExistingGraph(nodes, relationships) {
+  if (!nodes.length && !relationships.length) {
+    return 'No existing graph data.';
+  }
+  
+  let context = 'EXISTING NODES:\n';
+  nodes.forEach(node => {
+    context += `- ${node.name} (${node.type}): ${node.description}\n`;
+  });
+  
+  if (relationships.length) {
+    context += '\nEXISTING RELATIONSHIPS:\n';
+    relationships.forEach(rel => {
+      context += `- ${rel.fromNode} ${rel.relationshipType} ${rel.toNode}: ${rel.description}\n`;
+    });
+  }
+  
+  return context;
 }
 
 function formatWeaverContext(weaverData) {
@@ -278,6 +351,11 @@ function formatWeaverContext(weaverData) {
   weaverData.forEach((item, index) => {
     const domain = extractDomain(item.sourceUrl);
     contextText += `${index + 1}. From ${domain}: "${item.text}"\n`;
+    
+    // Include extracted concepts if available
+    if (item.nodes && item.nodes.length > 0) {
+      contextText += `   Key concepts: ${item.nodes.map(n => n.name).join(', ')}\n`;
+    }
   });
   
   contextText += '\nUSING THE ABOVE CONTEXT:\n';

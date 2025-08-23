@@ -7,15 +7,36 @@
 <body>
   <div class="header">
     <h1>
-      <img src="logo.png" alt="Navao" class="logo" />
-      Navao
+      <img src="logo.png" alt="Weaver" class="logo" />
+      Weaver
     </h1>
     <div id="count" class="count">0 saved snippets</div>
+    <div class="view-toggle">
+      <button id="list-view" class="view-btn active">List</button>
+      <button id="graph-view" class="view-btn">Graph</button>
+    </div>
   </div>
   
-  <div id="snippets-container" class="snippets-container">
-    <div id="empty-state" class="empty-state">
-      No saved text yet. Highlight text on any webpage and right-click to save it.
+  <div id="content-container" class="content-container">
+    <div id="list-container" class="list-container">
+      <div id="snippets-container" class="snippets-container">
+        <div id="empty-state" class="empty-state">
+          No saved text yet. Highlight text on any webpage and right-click to save it.
+        </div>
+      </div>
+    </div>
+    
+    <div id="graph-container" class="graph-container hidden">
+      <div id="graph-canvas" class="graph-canvas">
+        <div id="graph-empty-state" class="graph-empty-state">
+          Save some text to see your knowledge graph appear here.
+        </div>
+      </div>
+      <div id="graph-controls" class="graph-controls">
+        <button id="reset-zoom" class="graph-control-btn">Reset View</button>
+        <button id="layout-force" class="graph-control-btn active">Force Layout</button>
+        <button id="layout-tree" class="graph-control-btn">Tree Layout</button>
+      </div>
     </div>
   </div>
   
@@ -27,8 +48,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <span id="modal-close" class="close">&times;</span>
+        <h3 id="modal-title" class="modal-title"></h3>
       </div>
-      <div id="modal-text" class="modal-text"></div>
+      <div id="modal-body" class="modal-body">
+        <div id="modal-text" class="modal-text"></div>
+        <div id="modal-meta" class="modal-meta hidden"></div>
+      </div>
     </div>
   </div>
   

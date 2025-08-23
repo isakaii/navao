@@ -55,8 +55,8 @@
 }
 
 body {
-  width: 380px;
-  min-height: 450px;
+  width: 600px;
+  min-height: 700px;
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
@@ -99,11 +99,118 @@ body {
   font-weight: var(--font-weight-medium);
 }
 
+.view-toggle {
+  margin-top: 12px;
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+.view-btn {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) / 2);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.view-btn:hover {
+  opacity: 1;
+  background: var(--accent);
+}
+
+.view-btn.active {
+  background: var(--primary-foreground);
+  color: var(--primary);
+  opacity: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content-container {
+  background: var(--background);
+}
+
+.list-container {
+  display: block;
+}
+
+.list-container.hidden {
+  display: none;
+}
+
 .snippets-container {
-  max-height: 320px;
+  max-height: 500px;
   overflow-y: auto;
   padding: 16px;
   background: var(--background);
+}
+
+.graph-container {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  background: var(--background);
+}
+
+.graph-container.hidden {
+  display: none;
+}
+
+.graph-canvas {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin: 16px;
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.graph-empty-state {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.graph-controls {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px 16px 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.graph-control-btn {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) / 2);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.graph-control-btn:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.graph-control-btn.active {
+  background: var(--green-accent);
+  color: white;
+  border-color: var(--green-accent);
 }
 
 .empty-state {
@@ -274,6 +381,20 @@ body {
   background: var(--accent);
 }
 
+.modal-title {
+  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  color: var(--card-foreground);
+  margin: 0;
+  padding-right: 24px;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .modal-text {
   font-size: 14px;
   line-height: 1.6;
@@ -282,6 +403,84 @@ body {
   word-break: break-word;
   font-weight: var(--font-weight-normal);
 }
+
+.modal-meta {
+  background: var(--muted);
+  border-radius: var(--radius);
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+
+.modal-meta.hidden {
+  display: none;
+}
+
+/* Graph visualization styles */
+.graph-node {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.graph-node circle {
+  stroke: var(--border);
+  stroke-width: 2px;
+  fill: var(--card);
+}
+
+.graph-node:hover circle {
+  stroke: var(--green-accent);
+  stroke-width: 3px;
+}
+
+.graph-node.selected circle {
+  stroke: var(--green-accent);
+  stroke-width: 3px;
+  fill: var(--green-accent);
+}
+
+.graph-node text {
+  fill: var(--card-foreground);
+  font-size: 10px;
+  font-weight: var(--font-weight-medium);
+  text-anchor: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+.graph-node.selected text {
+  fill: white;
+}
+
+.graph-edge {
+  stroke: var(--border);
+  stroke-width: 1px;
+  fill: none;
+  marker-end: url(#arrowhead);
+}
+
+.graph-edge.highlighted {
+  stroke: var(--green-accent);
+  stroke-width: 2px;
+}
+
+.graph-edge-label {
+  fill: var(--muted-foreground);
+  font-size: 8px;
+  text-anchor: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Node type colors */
+.graph-node.type-person circle { fill: #3B82F6; }
+.graph-node.type-concept circle { fill: #10B981; }
+.graph-node.type-organization circle { fill: #8B5CF6; }
+.graph-node.type-topic circle { fill: #F59E0B; }
+.graph-node.type-location circle { fill: #EF4444; }
+.graph-node.type-event circle { fill: #EC4899; }
+.graph-node.type-document circle { fill: #6B7280; }
 
 /* Dark mode media query */
 @media (prefers-color-scheme: dark) {
