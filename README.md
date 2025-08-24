@@ -1,24 +1,33 @@
 # Weaver
 
-**Become an Expert Prompt Engineer**
+**Take your context with you in every prompt**
 
-Weaver automatically optimizes your prompts with relevant context and tailors them for any AI model. Transform your browser into a prompt engineering powerhouse.
+Weaver automatically builds knowledge graphs from your saved content and optimizes prompts with intelligent, relevant context. Transform your browser into a comprehensive prompt engineering and knowledge management system.
 
 ## Features
 
-- **Save Context Anywhere**: Right-click on highlighted text to save it to Weaver
-- **AI-Powered Optimization**: Click "Optimize" button in ChatGPT to enhance prompts with saved context
-- **Simple Management**: View, delete, and manage saved text snippets through a clean popup interface
+- **One-Click Page Saving**: Click the Weaver icon and save entire webpage content automatically
+- **Knowledge Graph Generation**: AI automatically extracts concepts and relationships from saved content
+- **Smart Context Retrieval**: AI identifies and uses only relevant context for prompt optimization
+- **Visual Knowledge Exploration**: Interactive graph showing top 7 most connected concepts
 - **Advanced Prompt Engineering**: Uses Google's Gemini AI to apply expert prompt engineering techniques
+- **Optional Text Selection**: Still supports right-click saving for specific text snippets
 - **Local Storage**: All data stays on your device
 
 ## How It Works
 
-1. **Save Context**: Highlight any text on the web, right-click, and select "Save to Weaver"
-2. **Go to ChatGPT**: Visit chat.openai.com or chatgpt.com
-3. **Type Your Prompt**: Start writing your message
-4. **Optimize**: Click the "Optimize" button (with Weaver logo) that appears
-5. **Get Enhanced Results**: Your prompt is automatically optimized with relevant context
+### Saving Content
+1. **One-Click Saving**: Click the Weaver extension icon, then "Save Current Page" to automatically extract and save webpage content
+2. **Optional Selection**: Or highlight specific text, right-click, and select "Save Selection to Weaver"
+3. **AI Processing**: Content is automatically processed to extract key concepts and relationships
+4. **Knowledge Graph**: Builds an interconnected graph of your saved knowledge
+
+### Optimizing Prompts
+1. **Go to ChatGPT**: Visit chat.openai.com or chatgpt.com
+2. **Type Your Prompt**: Start writing your message (e.g., "write an email reply to Alicia")
+3. **Click Optimize**: The "Optimize" button (with Weaver logo) appears next to Send
+4. **Smart Context Selection**: AI finds only relevant saved content (e.g., previous emails with Alicia)
+5. **Enhanced Results**: Your prompt is optimized with targeted context and advanced techniques
 
 ## Installation
 
@@ -56,62 +65,72 @@ Weaver automatically optimizes your prompts with relevant context and tailors th
 - `config.js` - API configuration (created from template)
 
 ### Permissions Needed
-- **Context Menus**: For right-click "Save to Weaver" option
-- **Storage**: To save highlighted text locally
+- **Context Menus**: For right-click "Save Selection to Weaver" option
+- **Storage**: To save webpage content and knowledge graphs locally
 - **Notifications**: Success confirmations
 - **Active Tab**: To interact with current webpage
+- **Scripting**: To extract content from webpages
+- **Tabs**: To access page information
 - **Host Permissions**: Access to ChatGPT and Gemini API
 
 ## Usage Guide
 
-### Saving Text
-1. Highlight any text on any webpage
-2. Right-click and select "Save to Weaver"
-3. You'll see a notification confirming the save
-
-### Managing Saved Text
+### Saving Content
+**Method 1 - One-Click Page Saving (Recommended):**
 1. Click the Weaver extension icon in Chrome
-2. View all saved snippets with timestamps and source domains
-3. Click any snippet to view full text
-4. Use the "×" button to delete individual snippets
-5. Use "Clear All" to remove all saved text
+2. Click "Save Current Page" button
+3. Content is automatically extracted, processed, and added to your knowledge graph
 
-### Optimizing ChatGPT Prompts
-1. Go to ChatGPT and start typing a prompt
-2. The "Optimize" button (with Weaver logo) appears next to Send
-3. Click to enhance your prompt with:
-   - Saved context from Weaver
-   - Advanced prompt engineering techniques
-   - Better structure and clarity
-   - Specific constraints and formatting
+**Method 2 - Text Selection:**
+1. Highlight specific text on any webpage
+2. Right-click and select "Save Selection to Weaver" 
+3. Selected text is processed and added to knowledge graph
+
+### Managing Your Knowledge
+1. **View Saved Content**: Click the Weaver extension icon to see all saved snippets
+2. **Explore Knowledge Graph**: Click "🧠 View Knowledge Graph" to visualize connections
+3. **Interactive Graph**: Shows top 7 most connected concepts by default
+4. **Search & Filter**: Use search to explore all concepts and relationships
+5. **Content Management**: Click snippets to view full text, use "×" to delete individual items
+
+### Smart Prompt Optimization
+1. **Go to ChatGPT**: Visit chat.openai.com or chatgpt.com and start typing
+2. **Click Optimize**: The "Optimize" button (with Weaver logo) appears next to Send
+3. **AI-Powered Enhancement**: Your prompt is enhanced with:
+   - **Relevant Context Only**: AI selects only pertinent saved content
+   - **Advanced Prompt Engineering**: Professional structuring and clarity
+   - **Semantic Understanding**: Finds related concepts across your knowledge base
+   - **Example**: "write email to Alicia" → finds all Alicia-related content automatically
 
 ## Technical Details
 
 ### Architecture
 - **Manifest V3** Chrome extension
-- **Service Worker** for background operations
-- **Content Scripts** for ChatGPT integration
-- **Gemini 1.5 Flash** for AI optimization
+- **Service Worker** for background operations and AI processing
+- **Content Scripts** for ChatGPT integration and page extraction
+- **Gemini 1.5 Flash** for knowledge graph generation and optimization
+- **Interactive SVG** for knowledge graph visualization
 
 ### File Structure
 ```
 weaver/
 ├── manifest.json          # Extension configuration
-├── background.js          # Context menu & storage
-├── content.js            # ChatGPT integration
-├── popup.html/css/js     # Management interface
+├── background.js          # Content saving & knowledge graph generation
+├── content.js            # ChatGPT integration & smart optimization
+├── popup.html/css/js     # Management interface & page saving
+├── graph.html/js         # Knowledge graph visualization
 ├── config.template.js    # API configuration template
 ├── config.js             # API configuration (created from template)
 ├── logo.png              # Logo icon
 └── README.md            # This file
 ```
 
-### API Integration
-- Uses Google's Gemini 1.5 Flash model
-- Applies advanced prompt engineering techniques
-- Integrates ALL saved context naturally into prompts
-- Adds role assignments, constraints, and structure
-- Fallback handling for API errors
+### AI-Powered Features
+- **Knowledge Graph Generation**: Extracts concepts, entities, and relationships from content
+- **Semantic Context Retrieval**: Identifies relevant content based on prompt intent
+- **Cross-Snippet Connections**: Links related concepts from different sources (e.g., "AI" ↔ "Machine Learning")
+- **Advanced Prompt Engineering**: Professional structuring, role assignment, and constraint addition
+- **Content Intelligence**: Smart page extraction avoiding navigation, ads, and irrelevant content
 
 ## Troubleshooting
 
@@ -159,4 +178,4 @@ Having issues?
 
 ---
 
-**Transform your browser into a prompt engineering powerhouse**
+**Take your context with you in every prompt**
