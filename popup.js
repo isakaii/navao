@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 let savedData = [];
 
 function setupEventListeners() {
+  document.getElementById('save-current-page').addEventListener('click', saveCurrentPage);
   document.getElementById('clear-all').addEventListener('click', clearAllSnippets);
   document.getElementById('modal-close').addEventListener('click', closeModal);
   document.getElementById('modal').addEventListener('click', function(e) {
@@ -204,6 +205,136 @@ function clearAllSnippets() {
       loadData();
     });
   }
+}
+
+async function saveCurrentPage() {
+  const saveButton = document.getElementById('save-current-page');
+  
+  try {
+    // Show loading state
+    saveButton.innerHTML = '⏳ Saving Page...';
+    saveButton.disabled = true;
+    
+    // Get current tab
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    
+    if (!tab || !tab.url) {
+      throw new Error('Cannot access current tab');
+    }
+    
+    // Skip chrome:// and extension pages
+    if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://')) {
+      throw new Error('Cannot save content from system pages');
+    }
+    
+    // Inject content script to extract page content
+    const results = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      function: extractPageContent
+    });
+    
+    const pageContent = results[0].result;
+    
+    if (!pageContent || !pageContent.text.trim()) {
+      throw new Error('No readable content found on this page');
+    }
+    
+    // Save the extracted content using the existing background script function
+    await chrome.runtime.sendMessage({
+      action: 'savePageContent',
+      content: pageContent
+    });
+    
+    // Reload data to show the new saved content
+    loadData();
+    
+    // Show success state briefly
+    saveButton.innerHTML = '✅ Page Saved!';
+    setTimeout(() => {
+      saveButton.innerHTML = '💾 Save Current Page';
+      saveButton.disabled = false;
+    }, 2000);
+    
+  } catch (error) {
+    console.error('Error saving page:', error);
+    saveButton.innerHTML = '❌ Failed to Save';
+    setTimeout(() => {
+      saveButton.innerHTML = '💾 Save Current Page';
+      saveButton.disabled = false;
+    }, 2000);
+  }
+}
+
+// This function will be injected into the page to extract content
+function extractPageContent() {
+  // Get the page title
+  const title = document.title;
+  
+  // Get the main content - try multiple strategies
+  let mainContent = '';
+  
+  // Strategy 1: Look for main content containers
+  const contentSelectors = [
+    'article',
+    'main',
+    '[role="main"]',
+    '.content',
+    '.main-content',
+    '.post-content',
+    '.entry-content',
+    '#content',
+    '.container'
+  ];
+  
+  for (const selector of contentSelectors) {
+    const element = document.querySelector(selector);
+    if (element) {
+      mainContent = element.innerText.trim();
+      if (mainContent.length > 200) {
+        break;
+      }
+    }
+  }
+  
+  // Strategy 2: If no main content found, get body text but filter out navigation
+  if (!mainContent || mainContent.length < 200) {
+    // Clone body to manipulate without affecting the page
+    const bodyClone = document.body.cloneNode(true);
+    
+    // Remove unwanted elements
+    const unwantedSelectors = [
+      'nav', 'header', 'footer', 'aside',
+      '.navigation', '.nav', '.menu', '.sidebar',
+      '.header', '.footer', '.ads', '.advertisement',
+      'script', 'style', 'noscript'
+    ];
+    
+    unwantedSelectors.forEach(selector => {
+      const elements = bodyClone.querySelectorAll(selector);
+      elements.forEach(el => el.remove());
+    });
+    
+    mainContent = bodyClone.innerText.trim();
+  }
+  
+  // Clean up the content
+  mainContent = mainContent
+    .replace(/\s+/g, ' ')  // Replace multiple whitespace with single space
+    .replace(/\n\s*\n/g, '\n\n')  // Clean up line breaks
+    .trim();
+  
+  // Limit content length (to avoid overwhelming the AI)
+  const maxLength = 5000;
+  if (mainContent.length > maxLength) {
+    mainContent = mainContent.substring(0, maxLength) + '...';
+  }
+  
+  return {
+    title,
+    text: mainContent,
+    url: window.location.href,
+    timestamp: Date.now()
+  };
 }
 
 function rebuildGraphData(snippets) {

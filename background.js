@@ -1,10 +1,11 @@
 // Import configuration
 importScripts('config.js');
 
+// Optional: Keep context menu for users who prefer right-click to save selected text
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "saveToWeaver",
-    title: "Save to Weaver",
+    title: "Save Selection to Weaver",
     contexts: ["selection"]
   });
 });
@@ -14,6 +15,25 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     saveTextToWeaver(info.selectionText, tab.url);
   }
 });
+
+// Handle messages from popup
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'savePageContent') {
+    savePageContentToWeaver(message.content)
+      .then(() => sendResponse({ success: true }))
+      .catch((error) => sendResponse({ success: false, error: error.message }));
+    return true; // Keep the message channel open for async response
+  }
+});
+
+async function savePageContentToWeaver(pageContent) {
+  console.log('savePageContentToWeaver called with:', pageContent);
+  
+  const text = pageContent.text;
+  const sourceUrl = pageContent.url;
+  
+  return saveTextToWeaver(text, sourceUrl);
+}
 
 async function saveTextToWeaver(text, sourceUrl) {
   console.log('saveTextToWeaver called with:', { text, sourceUrl });
@@ -98,6 +118,14 @@ INSTRUCTIONS:
 3. Each node should have: name, type (person, concept, organization, topic, etc.), description
 4. Each relationship should have: fromNode, toNode, relationshipType, description
 5. Consider the existing graph context to avoid duplicates and find connections
+6. IMPORTANT: Look for conceptual relationships between related terms across different snippets. For example:
+   - "Artificial Intelligence" and "Machine Learning" should be connected (e.g., "Machine Learning" is a "subset of" "Artificial Intelligence")
+   - "Python" and "Programming" should be connected (e.g., "Python" is a "type of" "Programming Language")
+   - "Neural Networks" and "Deep Learning" should be connected (e.g., "Neural Networks" are "fundamental to" "Deep Learning")
+   - "Data Science" and "Statistics" should be connected (e.g., "Data Science" "relies on" "Statistics")
+7. Use relationship types like: "subset of", "type of", "part of", "related to", "uses", "implements", "applies", "fundamental to", "relies on", "enables", "includes"
+8. When you find a concept in the new text that is semantically related to an existing node, create a relationship even if they weren't mentioned together
+9. Prioritize creating cross-snippet conceptual connections that build a more interconnected knowledge graph
 
 Return a JSON object with this exact structure:
 {

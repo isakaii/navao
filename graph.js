@@ -26,20 +26,33 @@ function loadGraphData() {
       relationshipCount: graphData.relationships.length
     });
     
+    // Initialize with top 7 nodes
+    filteredNodes = getTopNodesByRelationships(7);
+    
     updateStats();
     renderNodes();
   });
 }
 
 function updateStats() {
-  document.getElementById('nodes-count').textContent = graphData.nodes.length;
+  const displayedNodesCount = filteredNodes.length;
+  const totalNodesCount = graphData.nodes.length;
+  
+  // Show "displayed/total" if filtering is active, otherwise just total
+  if (displayedNodesCount < totalNodesCount) {
+    document.getElementById('nodes-count').textContent = `${displayedNodesCount}/${totalNodesCount}`;
+  } else {
+    document.getElementById('nodes-count').textContent = totalNodesCount;
+  }
+  
   document.getElementById('relationships-count').textContent = graphData.relationships.length;
   document.getElementById('snippets-count').textContent = weaverData.length;
 }
 
 function filterNodes(query) {
   if (!query.trim()) {
-    filteredNodes = [...graphData.nodes];
+    // Show top 7 nodes with most relationships when no search query
+    filteredNodes = getTopNodesByRelationships(7);
   } else {
     const lowerQuery = query.toLowerCase();
     filteredNodes = graphData.nodes.filter(node => 
@@ -49,6 +62,29 @@ function filterNodes(query) {
     );
   }
   renderNodes();
+  updateStats();
+}
+
+function getTopNodesByRelationships(limit = 7) {
+  if (graphData.nodes.length === 0) return [];
+  
+  // Count relationships for each node
+  const nodeRelationshipCounts = graphData.nodes.map(node => {
+    const relationshipCount = graphData.relationships.filter(rel => 
+      rel.fromNode === node.id || rel.toNode === node.id
+    ).length;
+    
+    return {
+      ...node,
+      relationshipCount
+    };
+  });
+  
+  // Sort by relationship count (descending) and take top nodes
+  return nodeRelationshipCounts
+    .sort((a, b) => b.relationshipCount - a.relationshipCount)
+    .slice(0, Math.min(limit, nodeRelationshipCounts.length))
+    .map(({ relationshipCount, ...node }) => node); // Remove the count property
 }
 
 function renderNodes() {

@@ -190,7 +190,12 @@ async function optimizePromptWithWeaver(textarea) {
     const result = await chrome.storage.local.get(['weaverData']);
     
     const weaverData = result.weaverData || [];
-    const optimizedPrompt = await optimizeWithGemini(originalPrompt, weaverData);
+    
+    // Find relevant context based on the user's prompt
+    const relevantContext = await findRelevantContext(originalPrompt, weaverData);
+    console.log('Found relevant context:', relevantContext);
+    
+    const optimizedPrompt = await optimizeWithGemini(originalPrompt, relevantContext);
     
     if (optimizedPrompt) {
       setTextareaValue(textarea, optimizedPrompt);
@@ -204,6 +209,56 @@ async function optimizePromptWithWeaver(textarea) {
     weaverButton.style.opacity = '1';
   }
 }
+
+async function findRelevantContext(userPrompt, allWeaverData, maxResults = 5) {
+  if (!allWeaverData || allWeaverData.length === 0) {
+    return [];
+  }
+  
+  // If we have few snippets, return all of them
+  if (allWeaverData.length <= maxResults) {
+    return allWeaverData;
+  }
+  
+  const relevanceSystemPrompt = `You are an expert at identifying relevant context for user queries. Given a user's prompt and a list of saved text snippets, identify which snippets are most relevant to help answer or improve the user's prompt.
+
+USER PROMPT:
+"${userPrompt}"
+
+SAVED SNIPPETS:
+${allWeaverData.map((item, index) => {
+  const domain = extractDomain(item.sourceUrl);
+  const preview = item.text.slice(0, 200) + (item.text.length > 200 ? '...' : '');
+  const concepts = item.nodes && item.nodes.length > 0 ? `\nConcepts: ${item.nodes.map(n => n.name).join(', ')}` : '';
+  return `${index}: From ${domain}: "${preview}"${concepts}`;
+}).join('\n\n')}
+
+INSTRUCTIONS:
+Analyze the user's prompt and identify which saved snippets would be most helpful for:
+1. Providing relevant background context
+2. Supporting the user's request with specific information
+3. Adding domain expertise or examples
+4. Enhancing the prompt with related concepts
+
+For example, if the user says "write an email reply to Alicia", look for all snippets that mention "Alicia" or contain previous email conversations with her.
+
+Return ONLY a JSON array of the indices of the most relevant snippets, ordered by relevance (most relevant first). Return at most ${maxResults} indices. If no snippets are relevant, return an empty array [].
+
+Example response: [2, 7, 1, 4]
+
+Return ONLY the JSON array, no explanation.`;
+
+  const response = await callGeminiAPI(relevanceSystemPrompt);
+  const cleanResponse = response.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+  const relevantIndices = JSON.parse(cleanResponse);
+  
+  // Return the relevant snippets based on the indices
+  return relevantIndices
+    .filter(index => index >= 0 && index < allWeaverData.length)
+    .map(index => allWeaverData[index])
+    .slice(0, maxResults);
+}
+
 
 async function optimizeWithGemini(originalPrompt, weaverData) {
   const contextText = formatWeaverContext(weaverData);
