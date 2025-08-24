@@ -45,8 +45,8 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["logo.png"],
-      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"]
+      "resources": ["logo.png", "graph.html", "graph.js"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
